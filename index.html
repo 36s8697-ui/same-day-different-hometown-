@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>우리의 하루 — 이주민의 일상과 목소리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1F5F7;--surface:#FFFFFF;--ink:#1B2B3A;--muted:#566676;--line:#D5DEE4;--sea:#2A6A8E;--sun:#F0B03A;--sun-ink:#4A3300;--coral:#D95F52;
+--serif:"Noto Serif KR","Batang",serif;--sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10181F;--surface:#18232C;--ink:#E8EEF2;--muted:#9FB0BD;--line:#2B3A46;--sea:#7DB9D8;--sun:#F0B03A;--sun-ink:#2A1C00;--coral:#F08A7E}}
+:root[data-theme="dark"]{--bg:#10181F;--surface:#18232C;--ink:#E8EEF2;--muted:#9FB0BD;--line:#2B3A46;--sea:#7DB9D8;--sun:#F0B03A;--sun-ink:#2A1C00;--coral:#F08A7E}
+*{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.75 var(--sans);word-break:keep-all}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--sea);outline-offset:2px}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:4px;align-items:center;overflow-x:auto}
+nav .brand{font:700 18px var(--serif);margin-right:auto;padding:14px 12px 14px 0;white-space:nowrap}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:16px 12px 13px;font-weight:500;white-space:nowrap;color:var(--muted)}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--sun)}
+.hero{padding:72px 0 56px}
+.hello{font:700 clamp(44px,10vw,92px)/1.1 var(--serif);margin:0;min-height:1.2em;color:var(--sea);transition:opacity .35s}
+.hello.out{opacity:0}
+.hero h1{font:500 clamp(22px,4vw,32px)/1.5 var(--serif);margin:20px 0 14px;max-width:20em}
+.hero p{max-width:34em;color:var(--muted);margin:0 0 28px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{background:var(--sun);color:var(--sun-ink);border:0;border-radius:999px;padding:12px 22px;font-weight:600}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--ink)}
+h2{font:700 clamp(26px,5vw,38px)/1.3 var(--serif);margin:0 0 10px}
+.lead{color:var(--muted);max-width:36em;margin:0 0 28px}
+section.tab{display:none;padding:16px 0 80px}
+section.tab.on{display:block}
+.pick{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{background:var(--surface);border:1.5px solid var(--line);border-radius:999px;padding:8px 16px;font-weight:500}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px}
+.panel h3{font:700 24px/1.4 var(--serif);margin:0 0 4px}
+.sample{display:inline-block;font-size:14px;color:var(--muted);margin-bottom:18px}
+.day{list-style:none;margin:0 0 22px;padding:0;border-left:3px solid var(--sea)}
+.day li{display:grid;grid-template-columns:84px 1fr;gap:12px;padding:8px 0 8px 18px;position:relative}
+.day li::before{content:"";position:absolute;left:-8px;top:18px;width:13px;height:13px;border-radius:50%;background:var(--sun);border:2px solid var(--surface)}
+.day time{font-weight:600;color:var(--sea)}
+.about{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;padding-top:20px;border-top:1px solid var(--line)}
+.about div{font-size:15px}
+.about b{display:block;font-size:14px;color:var(--muted);font-weight:500}
+.note{margin-top:20px;font-size:15px;color:var(--muted);border-left:3px solid var(--sun);padding-left:14px}
+.q{display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:10px;font:600 18px/1.5 var(--sans)}
+.q[aria-expanded="true"]{border-color:var(--sea)}
+.ans{display:none;margin:-4px 0 16px;padding:22px 24px;background:var(--surface);border:1px solid var(--line);border-top:0;border-radius:0 0 14px 14px}
+.ans.on{display:block}
+.ans blockquote{font:500 20px/1.7 var(--serif);margin:0 0 12px;padding:0}
+.src{font-size:14px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.myth{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:22px;text-align:left;min-height:150px;font-size:18px;font-family:var(--serif);font-weight:500;line-height:1.55}
+.myth small{display:block;font:400 14px var(--sans);color:var(--coral);margin-bottom:8px}
+.myth[aria-expanded="true"]{border-color:var(--coral)}
+#mythDetail{margin-top:18px;display:none}
+#mythDetail.on{display:block}
+#mythDetail h4{font:700 20px var(--serif);margin:0 0 8px}
+#mythDetail ul{padding-left:20px;margin:8px 0}
+.links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.links button{background:none;border:1.5px solid var(--sea);color:var(--sea);border-radius:999px;padding:6px 14px;font-weight:500}
+footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px}
+@media (max-width:560px){body{font-size:16px}.panel{padding:20px}.day li{grid-template-columns:72px 1fr}}
+@media (prefers-reduced-motion:reduce){.hello{transition:none}}
+</style>
+</head>
+<body>
+<nav aria-label="메뉴"><div class="wrap" role="tablist">
+<span class="brand">우리의 하루</span>
+<button role="tab" data-t="daily" aria-selected="true">나의 일상</button>
+<button role="tab" data-t="voice" aria-selected="false">나의 목소리</button>
+<button role="tab" data-t="beyond" aria-selected="false">편견 너머</button>
+</div></nav>
+
+<main class="wrap">
+<header class="hero">
+<p class="hello" id="hello" aria-hidden="true">안녕하세요</p>
+<h1>뉴스에 나오는 숫자 말고, 한 사람의 하루를 들여다봅니다.</h1>
+<p>한국에서 학교에 가고, 일하고, 밥을 먹고, 친구를 만나는 이주민 한 사람 한 사람의 일상과 목소리를 모았어요. 어려움도, 웃음도, 꿈도 함께 담습니다.</p>
+<div class="cta"><button class="btn" data-go="daily">하루 들여다보기</button><button class="btn alt" data-go="beyond">편견 점검하기</button></div>
+</header>
+
+<section class="tab on" id="daily" aria-labelledby="dailyH">
+<h2 id="dailyH">나의 일상</h2>
+<p class="lead">특별한 사람이 아니라, 우리 옆에서 평범한 하루를 사는 사람들의 이야기예요. 아래 세 이야기는 영상 <a href="https://www.youtube.com/watch?v=bWiKsmSQsZ4" target="_blank" rel="noopener">‘한국에서 이주민으로 살기’</a>의 자막을 요약했어요. 보고 싶은 하루를 골라 보세요.</p>
+<div class="pick" id="dailyPick"></div>
+<div class="panel" id="dailyPanel" aria-live="polite"></div>
+</section>
+
+<section class="tab" id="voice" aria-labelledby="voiceH">
+<h2 id="voiceH">나의 목소리</h2>
+<p class="lead">질문을 누르면 이주민 당사자의 답을 볼 수 있어요. 아래 답변은 영상 <a href="https://www.youtube.com/watch?v=bWiKsmSQsZ4" target="_blank" rel="noopener">‘한국에서 이주민으로 살기’</a>(너, 나, 우리 위튜브)의 인터뷰예요.</p>
+<div id="voiceList"></div>
+</section>
+
+<section class="tab" id="beyond" aria-labelledby="beyondH">
+<h2 id="beyondH">편견 너머</h2>
+<p class="lead">흔히 듣는 말을 하나 골라 보세요. 정말 그런지 자료와 경험으로 함께 따져 봐요.</p>
+<div class="cards" id="myths"></div>
+<div class="panel" id="mythDetail" aria-live="polite"></div>
+</section>
+</main>
+
+<footer><div class="wrap">출처: 너, 나, 우리 위튜브 「한국에서 이주민으로 살기」 · <a href="https://youtu.be/bWiKsmSQsZ4" target="_blank" rel="noopener">https://youtu.be/bWiKsmSQsZ4</a></div></footer>
+
+<script>
+var DAILY=[
+{k:"네팔 · 제조업",t:"네팔에서 온 포장 담당 직원의 일상",who:"카펫 제조 회사 포장 파트, 8년째 근무",tag:"영상 속 이야기",
+ d:[["일터","카펫을 만드는 회사에서 포장 일을 해요. 일이 조금 힘들지만 동료와 관리자가 도와줘요."],["취미","어릴 때부터 춤을 좋아했어요. 네팔에서도 행사에 자주 참여했고, 춤은 스스로를 즐겁게 하는 ‘댄스 테라피’ 같다고 해요."],["첫인상","처음엔 한국 사람과 다를 거라 생각했지만, 지내 보니 네팔과 비슷한 점이 많았어요. 명절에 어른께 인사하고 용돈을 받는 모습이 네팔의 명절과 닮았대요."],["가족","휴대폰 속 가족 사진을 보면 멀리 있어도 곁에 있는 것 같아요. 아들딸을 똑같이 대해 준 어머니께 늘 고마워해요."],["어려움","처음엔 말을 잘 알아듣지 못해 속상했어요. 한국어를 공부하면서 조금씩 나아졌고, 배움이 중요하다는 걸 어머니에게서 배웠다고 해요."],["앞으로","8년의 경험을 바탕으로 더 많은 기술을 배우고, 능력을 인정받는 곳에서 일하고 싶어 해요."]],
+ a:[["취미","춤"],["가족","네팔에 있는 가족, 어머니에 대한 감사"],["바람","기술을 더 배우고 인정받는 일터"]]},
+{k:"태국 · 식당",t:"태국에서 온 식당 가족의 하루",who:"한국에서 20년 넘게 산 부부, 아산에서 식당 운영",tag:"영상 속 이야기",
+ d:[["11:00","문 열기 전에 장보기와 준비를 시작해요. 요리는 아내가, 장보기·청소·손님 맞이·배달은 남편이 맡아요."],["12:00","정오에 식당 문을 열어요."],["보람","태국, 한국, 다른 나라 손님이 “맛있다”고 말해 줄 때 행복하고 뿌듯해요. 식당에서 가장 중요한 건 청결이라고 해요."],["지나온 길","2002년 관광으로 왔다가 공장에서 일하며 돈을 모았고, 이후 식당을 열어 10년 정도 운영하고 있어요."],["가족","딸이 한국에서 유치원을 다녀요. 아이가 더 나은 삶을 살았으면 해서 한국에 머물러요."],["요즘","코로나 이후 손님이 줄어 수입이 가장 큰 걱정이에요."]],
+ a:[["일","부부가 함께 하는 식당"],["가족","딸이 가족의 ‘채워 주는 존재’"],["바람","딸이 더 높은 교육을 받는 것"]]},
+{k:"태국 · 카페",t:"한국에서 일하다 고향으로 돌아간 사람의 기억",who:"1998년 한국에 와 여러 공장에서 일함, 지금은 태국 농카이에서 마을 카페 운영",tag:"영상 속 이야기",
+ d:[["계기","어린 자녀를 키우고 학비를 보내려고 1998년에 한국으로 일하러 왔어요."],["일터","여러 공장에서 일했고, 가장 오래 일한 곳은 전자 부품 공장이에요. 그곳에서 기계에 손을 다치는 사고를 겪었어요."],["기억","사장님과 동료들이 외국인인 자신을 안쓰럽게 여겨 간식과 한국 음식을 챙겨 줬어요. 지금도 고맙고 존경한다고 하고, 사고가 있었어도 한국을 계속 좋아해요."],["그리움","한국의 일터와 친구들, 여행지가 그리워 다시 가고 싶어 해요."],["지금","태국의 작은 마을에서 카페를 하고 있어요. 한국 공장에서 받은 성실 직원 표창장을 가게에 걸어 두었어요."]],
+ a:[["지금","고향 마을 카페"],["그리움","한국의 친구와 여행지"],["자랑","성실 직원 표창장"]]},
+
+];
+var VOICE=[
+{q:"한국에서 생활하면서 가장 기억에 남는 순간은 무엇인가요?",a:"사람들이 제 식당에서 “와, 이건 진짜 맛있다”라고 말해줄 때가 있습니다. 그럴 때 정말 행복하고, 마음이 뿌듯합니다.",s:"한국에서 식당을 운영하는 태국 출신 이주민 · 영상 ‘한국에서 이주민으로 살기’"},
+{q:"한국에서 생활하며 어려웠던 점은 무엇인가요?",a:"관리자나 동료들이 하는 말을 잘 이해하지 못해 일할 때나 숙소 생활에서도 처음에는 조금 힘들고 기분이 나쁠 때도 있었습니다.",s:"제조업체에서 일하는 네팔 출신 이주민 · 영상 ‘한국에서 이주민으로 살기’"},
+{q:"왜 계속 한국에 있고 싶은가요?",a:"저에게는 딸이 있습니다. 그 아이가 저보다 나은 삶을 살았으면 좋겠습니다. 지금 제 딸은 한국에서 유치원을 다니고 있고 공부를 더 많이 해서 높은 교육을 받았으면 합니다.",s:"한국에서 식당을 운영하는 태국 출신 이주민 · 영상 ‘한국에서 이주민으로 살기’"},
+{q:"앞으로 더 해보고 싶은 것은 무엇인가요?",a:"저는 8년 동안 회사에서 일하며 많은 경험을 쌓았습니다. 그리고 지금보다 다른 곳에서도 일하고 싶은 마음이 있습니다. 그리고 더 많은 일과 기술을 배워보고 싶습니다. 그리고 지금보다 더 나은 급여를 받고, 제 능력을 인정받을 수 있는 곳에서 일하고 싶습니다.",s:"제조업체에서 일하는 네팔 출신 이주민 · 영상 ‘한국에서 이주민으로 살기’"}
+];
+var MYTH=[
+{m:"이주민은 우리 일자리를 빼앗는다",t:"일자리 문제는 업종과 지역에 따라 모습이 달라요. 한 문장으로 정리하기 어려운 주제예요.",
+ b:["이주민이 많이 일하는 분야가 어디인지, 내국인 구직자가 주로 찾는 분야와 겹치는지 살펴보세요.","‘누가 어떤 일을 하는가’를 통계로 확인하면 생각이 구체적으로 바뀌어요."],
+ s:"KOSIS 외국인 고용 통계, 고용노동부 자료"},
+{m:"이주민은 모두 힘들게 살 것이다",t:"어려움을 겪는 사람도 있지만, 이주민의 삶은 그것만으로 설명되지 않아요.",
+ b:["‘나의 일상’에서 본 것처럼 취미, 꿈, 친구 같은 평범한 이야기가 훨씬 많아요.","‘불쌍한 사람’이라는 시선도 또 하나의 편견일 수 있어요."],
+ s:"여성가족부 다문화가족실태조사 등"},
+{m:"이주민은 한국 문화에 적응하지 않으려 한다",t:"적응에는 시간과 환경이 필요해요. 언어 교육, 정보 접근, 지역사회의 태도가 큰 영향을 줘요.",
+ b:["한국어 교육 기회와 상담 창구가 얼마나 있는지 확인해 보세요.","적응은 한쪽만 하는 일이 아니라 서로 맞춰 가는 과정이에요."],
+ s:"법무부 사회통합프로그램, 지자체 다문화가족지원센터"},
+{m:"이주민은 모두 비슷하다",t:"이주민 안에는 노동자, 유학생, 결혼이민자, 귀화자, 난민, 이주 배경 아이들까지 서로 다른 배경이 있어요.",
+ b:["출신 나라, 체류 자격, 한국에 온 이유, 머문 기간에 따라 삶이 완전히 달라요.","‘이주민’이라는 한 단어로 묶으면 한 사람의 이야기가 사라져요."],
+ s:"법무부 출입국·외국인정책 통계월보"},
+{m:"이주민은 잠깐 돈만 벌고 떠날 사람들이다",t:"영상 속 사람들만 봐도 한국에서 8년, 20년 넘게 일하고 가정을 꾸린 경우가 있어요. 체류 기간과 계획은 사람마다 달라요.",
+ b:["영상에는 한 회사에서 8년째 일한 직원, 2002년에 와서 식당을 하는 부부, 1998년에 와서 여러 공장에서 일한 사람이 나와요.","영상 속 지원 사업 담당자는 인구 감소 상황에서 한국에 적응해 오래 함께 사는 이주민이 서로에게 좋다고 말해요. 한 기관의 관점이라는 점도 함께 생각해 보세요.","실제 체류 기간과 정주 현황은 법무부 통계로 확인해 보세요."],
+ s:"영상 ‘한국에서 이주민으로 살기’, 법무부 출입국·외국인정책 통계월보"}
+];
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
+
+/* tabs */
+var TABS=["daily","voice","beyond"];
+function show(id,push){
+ if(TABS.indexOf(id)<0)id="daily";
+ TABS.forEach(function(t){
+  $(t).classList.toggle("on",t===id);
+  document.querySelector('nav [data-t="'+t+'"]').setAttribute("aria-selected",t===id);
+ });
+ if(push){try{location.hash=id}catch(e){}}
+ window.scrollTo(0,0);
+}
+document.querySelectorAll("nav [data-t]").forEach(function(b){b.onclick=function(){show(b.dataset.t,true)}});
+document.querySelectorAll("[data-go]").forEach(function(b){b.onclick=function(){show(b.dataset.go,true)}});
+window.addEventListener("hashchange",function(){show(location.hash.slice(1),false)});
+
+/* hello rotation: one motion moment */
+var HI=["안녕하세요","Xin chào","你好","Kumusta","Сайн байна уу","नमस्ते","Hello"],hi=0,h=$("hello");
+if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+ setInterval(function(){h.classList.add("out");setTimeout(function(){hi=(hi+1)%HI.length;h.textContent=HI[hi];h.classList.remove("out")},350)},2600);
+}
+
+/* daily */
+function renderDaily(i){
+ var d=DAILY[i];
+ document.querySelectorAll("#dailyPick .chip").forEach(function(c,j){c.setAttribute("aria-pressed",j===i)});
+ $("dailyPanel").innerHTML='<h3>'+esc(d.t)+'</h3><span class="sample">'+esc(d.who)+' · '+esc(d.tag||'예시 이야기')+'</span><ul class="day">'+
+  d.d.map(function(r){return'<li><time>'+esc(r[0])+'</time><span>'+esc(r[1])+'</span></li>'}).join("")+'</ul><div class="about">'+
+  d.a.map(function(r){return'<div><b>'+esc(r[0])+'</b>'+esc(r[1])+'</div>'}).join("")+'</div><p class="note">이 하루에서 ‘어려움’보다 ‘평범함’이 먼저 보이나요? 그 느낌을 ‘편견 너머’에서 이어서 생각해 보세요.</p>';
+}
+$("dailyPick").innerHTML=DAILY.map(function(d,i){return'<button class="chip" aria-pressed="false" data-i="'+i+'">'+esc(d.k)+'</button>'}).join("");
+document.querySelectorAll("#dailyPick .chip").forEach(function(c){c.onclick=function(){renderDaily(+c.dataset.i)}});
+renderDaily(0);
+
+/* voice */
+$("voiceList").innerHTML=VOICE.map(function(v,i){return'<button class="q" aria-expanded="false" aria-controls="a'+i+'" data-i="'+i+'">'+esc(v.q)+'</button><div class="ans" id="a'+i+'"><blockquote>“'+esc(v.a)+'”</blockquote><div class="src">'+esc(v.s)+'</div></div>'}).join("");
+document.querySelectorAll("#voiceList .q").forEach(function(b){b.onclick=function(){
+ var open=b.getAttribute("aria-expanded")==="true";
+ b.setAttribute("aria-expanded",!open);$("a"+b.dataset.i).classList.toggle("on",!open);
+}});
+
+/* beyond */
+$("myths").innerHTML=MYTH.map(function(m,i){return'<button class="myth" aria-expanded="false" data-i="'+i+'"><small>이런 말, 들어 본 적 있나요?</small>“'+esc(m.m)+'”</button>'}).join("");
+document.querySelectorAll("#myths .myth").forEach(function(b){b.onclick=function(){
+ var i=+b.dataset.i,m=MYTH[i];
+ document.querySelectorAll("#myths .myth").forEach(function(x){x.setAttribute("aria-expanded",x===b)});
+ var p=$("mythDetail");p.classList.add("on");
+ p.innerHTML='<h4>'+esc(m.t)+'</h4><ul>'+m.b.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ul><p class="src">확인할 자료: '+esc(m.s)+'</p><div class="links"><button data-go="daily">실제 하루 보기</button><button data-go="voice">당사자 목소리 듣기</button></div>';
+ p.querySelectorAll("[data-go]").forEach(function(g){g.onclick=function(){show(g.dataset.go,true)}});
+ p.scrollIntoView({behavior:"smooth",block:"nearest"});
+}});
+
+if(location.hash)show(location.hash.slice(1),false);
+</script>
+</body>
+</html>
