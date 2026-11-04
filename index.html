@@ -67,6 +67,7 @@ section.tab.on{display:block}
 #mythDetail ul{padding-left:20px;margin:8px 0}
 .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .links button{background:none;border:1.5px solid var(--sea);color:var(--sea);border-radius:999px;padding:6px 14px;font-weight:500}
+.gr{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.gr:last-child{border:0}.gr b{font-weight:500;color:var(--muted);font-size:15px}.gn{font:700 24px/1.4 var(--serif)}.gs{color:var(--muted);font-size:15px}.tip{color:var(--muted);font-size:15px;margin:0 0 8px}
 footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px}
 @media (max-width:560px){body{font-size:16px}.panel{padding:20px}.day li{grid-template-columns:72px 1fr}}
 @media (prefers-reduced-motion:reduce){.hello{transition:none}}
@@ -78,6 +79,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
 <button role="tab" data-t="daily" aria-selected="true">나의 일상</button>
 <button role="tab" data-t="voice" aria-selected="false">나의 목소리</button>
 <button role="tab" data-t="beyond" aria-selected="false">편견 너머</button>
+<button role="tab" data-t="greet" aria-selected="false">인사말</button>
 </div></nav>
 
 <main class="wrap">
@@ -107,6 +109,13 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
 <div class="cards" id="myths"></div>
 <div class="panel" id="mythDetail" aria-live="polite"></div>
 </section>
+<section class="tab" id="greet" aria-labelledby="greetH">
+<h2 id="greetH">인사말</h2>
+<p class="lead">한국에 많이 오는 나라의 기본 인사말이에요. 나라를 골라 짧게 인사해 보세요.</p>
+<div class="pick" id="greetPick"></div>
+<div class="panel" id="greetPanel" aria-live="polite"></div>
+<p class="note">한국어 발음은 가까운 소리로 적은 것이에요. 같은 나라 안에서도 지역과 상황에 따라 인사가 다를 수 있어요.</p>
+</section>
 </main>
 
 <footer><div class="wrap">출처: 너, 나, 우리 위튜브 「한국에서 이주민으로 살기」 · <a href="https://youtu.be/bWiKsmSQsZ4" target="_blank" rel="noopener">https://youtu.be/bWiKsmSQsZ4</a></div></footer>
@@ -116,7 +125,7 @@ var DAILY=[
 {k:"네팔 · 제조업",t:"네팔에서 온 포장 담당 직원의 일상",who:"카펫 제조 회사 포장 파트, 8년째 근무",tag:"영상 속 이야기",
  d:[["일터","카펫을 만드는 회사에서 포장 일을 해요. 일이 조금 힘들지만 동료와 관리자가 도와줘요."],["취미","어릴 때부터 춤을 좋아했어요. 네팔에서도 행사에 자주 참여했고, 춤은 스스로를 즐겁게 하는 ‘댄스 테라피’ 같다고 해요."],["첫인상","처음엔 한국 사람과 다를 거라 생각했지만, 지내 보니 네팔과 비슷한 점이 많았어요. 명절에 어른께 인사하고 용돈을 받는 모습이 네팔의 명절과 닮았대요."],["가족","휴대폰 속 가족 사진을 보면 멀리 있어도 곁에 있는 것 같아요. 아들딸을 똑같이 대해 준 어머니께 늘 고마워해요."],["어려움","처음엔 말을 잘 알아듣지 못해 속상했어요. 한국어를 공부하면서 조금씩 나아졌고, 배움이 중요하다는 걸 어머니에게서 배웠다고 해요."],["앞으로","8년의 경험을 바탕으로 더 많은 기술을 배우고, 능력을 인정받는 곳에서 일하고 싶어 해요."]],
  a:[["취미","춤"],["가족","네팔에 있는 가족, 어머니에 대한 감사"],["바람","기술을 더 배우고 인정받는 일터"]]},
-{k:"태국 · 식당",t:"태국에서 온 식당 가족의 하루",who:"한국에서 20년 넘게 산 부부, 아산에서 식당 운영",tag:"영상 속 이야기",
+{k:"태국 · 식당",t:"태국에서 온 가족의 하루",who:"한국에서 20년 넘게 산 부부, 아산에서 식당 운영",tag:"영상 속 이야기",
  d:[["11:00","문 열기 전에 장보기와 준비를 시작해요. 요리는 아내가, 장보기·청소·손님 맞이·배달은 남편이 맡아요."],["12:00","정오에 식당 문을 열어요."],["보람","태국, 한국, 다른 나라 손님이 “맛있다”고 말해 줄 때 행복하고 뿌듯해요. 식당에서 가장 중요한 건 청결이라고 해요."],["지나온 길","2002년 관광으로 왔다가 공장에서 일하며 돈을 모았고, 이후 식당을 열어 10년 정도 운영하고 있어요."],["가족","딸이 한국에서 유치원을 다녀요. 아이가 더 나은 삶을 살았으면 해서 한국에 머물러요."],["요즘","코로나 이후 손님이 줄어 수입이 가장 큰 걱정이에요."]],
  a:[["일","부부가 함께 하는 식당"],["가족","딸이 가족의 ‘채워 주는 존재’"],["바람","딸이 더 높은 교육을 받는 것"]]},
 {k:"태국 · 카페",t:"한국에서 일하다 고향으로 돌아간 사람의 기억",who:"1998년 한국에 와 여러 공장에서 일함, 지금은 태국 농카이에서 마을 카페 운영",tag:"영상 속 이야기",
@@ -133,25 +142,25 @@ var VOICE=[
 var MYTH=[
 {m:"이주민은 우리 일자리를 빼앗는다",t:"일자리 문제는 업종과 지역에 따라 모습이 달라요. 한 문장으로 정리하기 어려운 주제예요.",
  b:["이주민이 많이 일하는 분야가 어디인지, 내국인 구직자가 주로 찾는 분야와 겹치는지 살펴보세요.","‘누가 어떤 일을 하는가’를 통계로 확인하면 생각이 구체적으로 바뀌어요."],
- s:"KOSIS 외국인 고용 통계, 고용노동부 자료"},
+ s:"",l:[["KOSIS 국가통계포털","https://kosis.kr"],["법무부 이민자 체류실태 및 고용조사 안내","https://www.moj.go.kr/bbs/immigration/47/606563/artclView.do"]]},
 {m:"이주민은 모두 힘들게 살 것이다",t:"어려움을 겪는 사람도 있지만, 이주민의 삶은 그것만으로 설명되지 않아요.",
  b:["‘나의 일상’에서 본 것처럼 취미, 꿈, 친구 같은 평범한 이야기가 훨씬 많아요.","‘불쌍한 사람’이라는 시선도 또 하나의 편견일 수 있어요."],
- s:"여성가족부 다문화가족실태조사 등"},
+ s:"",l:[["여성가족부 2021년 전국 다문화가족 실태조사 결과(정책브리핑)","https://www.korea.kr/briefing/pressReleaseView.do?newsId=156513530"]]},
 {m:"이주민은 한국 문화에 적응하지 않으려 한다",t:"적응에는 시간과 환경이 필요해요. 언어 교육, 정보 접근, 지역사회의 태도가 큰 영향을 줘요.",
  b:["한국어 교육 기회와 상담 창구가 얼마나 있는지 확인해 보세요.","적응은 한쪽만 하는 일이 아니라 서로 맞춰 가는 과정이에요."],
- s:"법무부 사회통합프로그램, 지자체 다문화가족지원센터"},
+ s:"",l:[["법무부 사회통합프로그램 소개","https://www.moj.go.kr/moj/369/subview.do"],["사회통합정보망","https://www.socinet.go.kr"]]},
 {m:"이주민은 모두 비슷하다",t:"이주민 안에는 노동자, 유학생, 결혼이민자, 귀화자, 난민, 이주 배경 아이들까지 서로 다른 배경이 있어요.",
  b:["출신 나라, 체류 자격, 한국에 온 이유, 머문 기간에 따라 삶이 완전히 달라요.","‘이주민’이라는 한 단어로 묶으면 한 사람의 이야기가 사라져요."],
- s:"법무부 출입국·외국인정책 통계월보"},
+ s:"",l:[["법무부 출입국외국인정책 통계월보(2026년 9월)","https://www.moj.go.kr/bbs/immigration/227/611544/artclView.do"]]},
 {m:"이주민은 잠깐 돈만 벌고 떠날 사람들이다",t:"영상 속 사람들만 봐도 한국에서 8년, 20년 넘게 일하고 가정을 꾸린 경우가 있어요. 체류 기간과 계획은 사람마다 달라요.",
  b:["영상에는 한 회사에서 8년째 일한 직원, 2002년에 와서 식당을 하는 부부, 1998년에 와서 여러 공장에서 일한 사람이 나와요.","영상 속 지원 사업 담당자는 인구 감소 상황에서 한국에 적응해 오래 함께 사는 이주민이 서로에게 좋다고 말해요. 한 기관의 관점이라는 점도 함께 생각해 보세요.","실제 체류 기간과 정주 현황은 법무부 통계로 확인해 보세요."],
- s:"영상 ‘한국에서 이주민으로 살기’, 법무부 출입국·외국인정책 통계월보"}
+ s:"",l:[["영상 ‘한국에서 이주민으로 살기’ (너, 나, 우리 위튜브)","https://youtu.be/bWiKsmSQsZ4"],["법무부 출입국외국인정책 통계월보(2026년 9월)","https://www.moj.go.kr/bbs/immigration/227/611544/artclView.do"]]}
 ];
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
 
 /* tabs */
-var TABS=["daily","voice","beyond"];
+var TABS=["daily","voice","beyond","greet"];
 function show(id,push){
  if(TABS.indexOf(id)<0)id="daily";
  TABS.forEach(function(t){
@@ -196,10 +205,33 @@ document.querySelectorAll("#myths .myth").forEach(function(b){b.onclick=function
  var i=+b.dataset.i,m=MYTH[i];
  document.querySelectorAll("#myths .myth").forEach(function(x){x.setAttribute("aria-expanded",x===b)});
  var p=$("mythDetail");p.classList.add("on");
- p.innerHTML='<h4>'+esc(m.t)+'</h4><ul>'+m.b.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ul><p class="src">확인할 자료: '+esc(m.s)+'</p><div class="links"><button data-go="daily">실제 하루 보기</button><button data-go="voice">당사자 목소리 듣기</button></div>';
+ p.innerHTML='<h4>'+esc(m.t)+'</h4><ul>'+m.b.map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ul><p class="src">확인할 자료: '+(m.l?m.l.map(function(x){return'<a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>'}).join(' · '):esc(m.s))+'</p><div class="links"><button data-go="daily">실제 하루 보기</button><button data-go="voice">당사자 목소리 듣기</button></div>';
  p.querySelectorAll("[data-go]").forEach(function(g){g.onclick=function(){show(g.dataset.go,true)}});
  p.scrollIntoView({behavior:"smooth",block:"nearest"});
 }});
+
+/* greetings */
+var GL=["안녕하세요","반가워요","감사합니다"];
+var GREET=[
+{n:"태국",l:"태국어",t:"말끝에 남자는 ‘크랍’, 여자는 ‘카’를 붙이면 정중해요.",g:[["สวัสดี","sawatdi","사와디 크랍/카"],["ยินดีที่ได้รู้จัก","yindi thi dai ruchak","인디 티 다이 루짝"],["ขอบคุณ","khop khun","컵쿤 크랍/카"]]},
+{n:"인도",l:"힌디어",t:"인도에는 여러 언어가 있어서 가장 널리 쓰이는 힌디어로 적었어요.",g:[["नमस्ते","namaste","나마스테"],["आपसे मिलकर खुशी हुई","aapse milkar khushi hui","아프세 밀까르 쿠시 후이"],["धन्यवाद","dhanyavaad","단야와드"]]},
+{n:"필리핀",l:"필리핀어(타갈로그어)",t:"‘포’를 붙이면 존댓말이 돼요.",g:[["Kumusta po","","쿠무스타 포"],["Ikinagagalak kitang makilala","","이키나가갈락 키탕 마킬랄라"],["Salamat po","","살라맛 포"]]},
+{n:"베트남",l:"베트남어",t:"",g:[["Xin chào","","씬 짜오"],["Rất vui được gặp bạn","","젓 부이 드억 갑 반"],["Cảm ơn","","깜 언"]]},
+{n:"인도네시아",l:"인도네시아어",t:"시간대에 따라 아침 ‘Selamat pagi’, 낮 ‘Selamat siang’, 밤 ‘Selamat malam’으로도 인사해요.",g:[["Halo","","할로"],["Senang bertemu dengan Anda","","스낭 브르뜨무 등안 안다"],["Terima kasih","","뜨리마 까시"]]},
+{n:"시리아",l:"아랍어(시리아 방언)",t:"",g:[["مرحبا","marhaba","마르하바"],["تشرفنا","tasharrafna","타샤르라프나"],["شكراً","shukran","슈크란"]]},
+{n:"네팔",l:"네팔어",t:"영상 「한국에서 이주민으로 살기」에도 네팔어가 나와요.",g:[["नमस्ते","namaste","나마스테"],["भेटेर खुशी लाग्यो","bhetera khushi lagyo","베테라 쿠시 라기오"],["धन्यवाद","dhanyabad","단야바드"]]},
+{n:"중국",l:"중국어(표준어)",t:"",g:[["你好","nǐ hǎo","니하오"],["很高兴认识你","hěn gāoxìng rènshi nǐ","헌 가오씽 런스 니"],["谢谢","xièxie","씨에씨에"]]},
+{n:"우즈베키스탄",l:"우즈베크어",t:"",g:[["Salom","","살롬"],["Tanishganimdan xursandman","","타니쉬가님단 후르산드만"],["Rahmat","","라흐마트"]]},
+{n:"몽골",l:"몽골어",t:"",g:[["Сайн байна уу","sain baina uu","사인 바이노"],["Танилцсандаа таатай байна","tanilcsandaa taatai baina","타닐츠산다 타타이 바이나"],["Баярлалаа","bayarlalaa","바야를랄라"]]}
+];
+function renderGreet(i){
+ var g=GREET[i];
+ document.querySelectorAll("#greetPick .chip").forEach(function(c,j){c.setAttribute("aria-pressed",j===i)});
+ $("greetPanel").innerHTML='<h3>'+esc(g.n)+' · '+esc(g.l)+'</h3>'+(g.t?'<p class="tip">'+esc(g.t)+'</p>':'')+g.g.map(function(r,k){return'<div class="gr"><b>'+GL[k]+'</b><div><div class="gn">'+esc(r[0])+'</div><div class="gs">'+(r[1]?esc(r[1])+' · ':'')+esc(r[2])+'</div></div></div>'}).join("");
+}
+$("greetPick").innerHTML=GREET.map(function(g,i){return'<button class="chip" aria-pressed="false" data-i="'+i+'">'+esc(g.n)+'</button>'}).join("");
+document.querySelectorAll("#greetPick .chip").forEach(function(c){c.onclick=function(){renderGreet(+c.dataset.i)}});
+renderGreet(0);
 
 if(location.hash)show(location.hash.slice(1),false);
 </script>
