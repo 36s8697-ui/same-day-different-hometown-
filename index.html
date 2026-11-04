@@ -68,6 +68,7 @@ section.tab.on{display:block}
 .links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .links button{background:none;border:1.5px solid var(--sea);color:var(--sea);border-radius:999px;padding:6px 14px;font-weight:500}
 .gr{display:grid;grid-template-columns:96px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}.gr:last-child{border:0}.gr b{font-weight:500;color:var(--muted);font-size:15px}.gn{font:700 24px/1.4 var(--serif)}.gs{color:var(--muted);font-size:15px}.tip{color:var(--muted);font-size:15px;margin:0 0 8px}
+.lbl{display:block;font-weight:600;margin-bottom:6px}textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:12px;resize:vertical}.lrow{display:flex;justify-content:space-between;align-items:center;margin:10px 0 14px;color:var(--muted);font-size:14px}.colors{display:flex;gap:8px}.sw{width:28px;height:28px;border-radius:6px;border:2px solid transparent;cursor:pointer}.sw[aria-pressed="true"]{border-color:var(--ink)}.bh{font:700 22px var(--serif);margin:32px 0 14px}.board{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:24px;padding:28px 14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;min-height:160px}.pn{position:relative;padding:28px 18px 34px;min-height:170px;color:#2B2B2B;font:500 17px/1.6 var(--serif);box-shadow:0 6px 14px rgba(0,0,0,.2);transform:rotate(var(--r));transition:transform .2s;overflow-wrap:anywhere}.pn::before{content:"";position:absolute;top:-9px;left:50%;width:64px;height:18px;margin-left:-32px;background:rgba(255,255,255,.6);border:1px solid rgba(0,0,0,.08);transform:rotate(-3deg)}.pn:hover{transform:rotate(0) scale(1.03)}.pn small{position:absolute;left:18px;bottom:10px;font:400 12px var(--sans);color:rgba(0,0,0,.6)}.pn .del{position:absolute;right:14px;bottom:8px;background:none;border:0;font:400 12px var(--sans);color:rgba(0,0,0,.6);text-decoration:underline}.empty{color:var(--muted);grid-column:1/-1;text-align:center;align-self:center}@media (prefers-reduced-motion:reduce){.pn{transition:none}}
 footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);font-size:14px}
 @media (max-width:560px){body{font-size:16px}.panel{padding:20px}.day li{grid-template-columns:72px 1fr}}
 @media (prefers-reduced-motion:reduce){.hello{transition:none}}
@@ -80,6 +81,7 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
 <button role="tab" data-t="voice" aria-selected="false">나의 목소리</button>
 <button role="tab" data-t="beyond" aria-selected="false">편견 너머</button>
 <button role="tab" data-t="greet" aria-selected="false">인사말</button>
+<button role="tab" data-t="letter" aria-selected="false">편지 쓰기</button>
 </div></nav>
 
 <main class="wrap">
@@ -115,6 +117,20 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
 <div class="pick" id="greetPick"></div>
 <div class="panel" id="greetPanel" aria-live="polite"></div>
 <p class="note">한국어 발음은 가까운 소리로 적은 것이에요. 같은 나라 안에서도 지역과 상황에 따라 인사가 다를 수 있어요.</p>
+</section>
+<section class="tab" id="letter" aria-labelledby="letterH">
+<h2 id="letterH">이주민에게 편지 쓰기</h2>
+<p class="lead">이야기를 보고 떠오른 마음을 이웃에게 건네 보세요. 이름 없이 짧게 적어서 게시판에 붙여요.</p>
+<div class="panel">
+<label class="lbl" for="lt">편지</label>
+<textarea id="lt" maxlength="200" rows="4" placeholder="예) 이야기를 들려줘서 고마워요. 동네에서 만나면 먼저 인사할게요."></textarea>
+<div class="lrow"><div class="colors" id="lc"></div><span id="lcount">0 / 200</span></div>
+<button class="btn" id="lsend">게시판에 붙이기</button>
+<p class="note">이름, 연락처, 학교 같은 개인 정보는 쓰지 말아 주세요. 서로를 존중하는 말만 적어요.</p>
+</div>
+<h3 class="bh">편지 게시판</h3>
+<div class="board" id="board" aria-live="polite"></div>
+<p class="note">이 게시판은 지금 쓰는 기기의 브라우저에만 저장돼요. 다른 사람은 내가 붙인 편지를 볼 수 없어요.</p>
 </section>
 </main>
 
@@ -160,7 +176,7 @@ function $(i){return document.getElementById(i)}
 function esc(s){return String(s).replace(/[&<>]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;"}[c]})}
 
 /* tabs */
-var TABS=["daily","voice","beyond","greet"];
+var TABS=["daily","voice","beyond","greet","letter"];
 function show(id,push){
  if(TABS.indexOf(id)<0)id="daily";
  TABS.forEach(function(t){
@@ -232,6 +248,20 @@ function renderGreet(i){
 $("greetPick").innerHTML=GREET.map(function(g,i){return'<button class="chip" aria-pressed="false" data-i="'+i+'">'+esc(g.n)+'</button>'}).join("");
 document.querySelectorAll("#greetPick .chip").forEach(function(c){c.onclick=function(){renderGreet(+c.dataset.i)}});
 renderGreet(0);
+
+/* letters */
+var LC=['#FFE98A','#FFC2CF','#BFE3FF','#C9F0C2'],LN=['노란색','분홍색','파란색','초록색'],lcol=0,LK='migrant_letters_v1',lmem=[];
+function lload(){try{var s=localStorage.getItem(LK);if(s)return JSON.parse(s)}catch(e){}return lmem}
+function lsave(a){lmem=a;try{localStorage.setItem(LK,JSON.stringify(a))}catch(e){}}
+function lcount(){$('lcount').textContent=$('lt').value.length+' / 200'}
+function lrender(){var a=lload();
+ $('board').innerHTML=a.length?a.map(function(n,i){var c=LC.indexOf(n.c)>=0?n.c:LC[0];return '<div class="pn" style="background:'+c+';--r:'+(+n.r||0)+'deg"><div>'+esc(n.t).replace(/\n/g,'<br>')+'</div><small>익명 · '+esc(n.d)+'</small><button class="del" data-i="'+i+'">떼기</button></div>'}).join(''):'<p class="empty">아직 붙은 편지가 없어요. 첫 번째 편지를 붙여 보세요.</p>';
+ document.querySelectorAll('#board .del').forEach(function(b){b.onclick=function(){var a=lload().slice();a.splice(+b.dataset.i,1);lsave(a);lrender()}})}
+$('lc').innerHTML=LC.map(function(c,i){return '<button class="sw" style="background:'+c+'" aria-label="'+LN[i]+'" aria-pressed="'+(i===0)+'" data-i="'+i+'"></button>'}).join('');
+document.querySelectorAll('#lc .sw').forEach(function(b){b.onclick=function(){lcol=+b.dataset.i;document.querySelectorAll('#lc .sw').forEach(function(x,j){x.setAttribute('aria-pressed',j===lcol)})}});
+$('lt').oninput=lcount;
+$('lsend').onclick=function(){var t=$('lt').value.trim();if(!t){$('lt').focus();return}var d=new Date(),a=lload().slice();a.unshift({t:t,c:LC[lcol],r:(Math.random()*6-3).toFixed(1),d:(d.getMonth()+1)+'월 '+d.getDate()+'일'});if(a.length>30)a.length=30;lsave(a);$('lt').value='';lcount();lrender()};
+lrender();
 
 if(location.hash)show(location.hash.slice(1),false);
 </script>
