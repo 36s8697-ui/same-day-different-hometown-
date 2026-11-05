@@ -126,11 +126,12 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:var(--muted);f
 <textarea id="lt" maxlength="200" rows="4" placeholder="예) 이야기를 들려줘서 고마워요. 동네에서 만나면 먼저 인사할게요."></textarea>
 <div class="lrow"><div class="colors" id="lc"></div><span id="lcount">0 / 200</span></div>
 <button class="btn" id="lsend">게시판에 붙이기</button>
+<p id="lmsg" role="status" style="margin:12px 0 0;color:var(--sea);font-weight:500"></p>
 <p class="note">이름, 연락처, 학교 같은 개인 정보는 쓰지 말아 주세요. 서로를 존중하는 말만 적어요.</p>
 </div>
 <h3 class="bh">편지 게시판</h3>
 <div class="board" id="board" aria-live="polite"></div>
-<p class="note">이 게시판은 지금 쓰는 기기의 브라우저에만 저장돼요. 다른 사람은 내가 붙인 편지를 볼 수 없어요.</p>
+<p class="note" id="lnote"></p>
 </section>
 </main>
 
@@ -254,13 +255,40 @@ var LC=['#FFE98A','#FFC2CF','#BFE3FF','#C9F0C2'],LN=['노란색','분홍색','�
 function lload(){try{var s=localStorage.getItem(LK);if(s)return JSON.parse(s)}catch(e){}return lmem}
 function lsave(a){lmem=a;try{localStorage.setItem(LK,JSON.stringify(a))}catch(e){}}
 function lcount(){$('lcount').textContent=$('lt').value.length+' / 200'}
-function lrender(){var a=lload();
+function lrenderLocal(){var a=lload();
  $('board').innerHTML=a.length?a.map(function(n,i){var c=LC.indexOf(n.c)>=0?n.c:LC[0];return '<div class="pn" style="background:'+c+';--r:'+(+n.r||0)+'deg"><div>'+esc(n.t).replace(/\n/g,'<br>')+'</div><small>익명 · '+esc(n.d)+'</small><button class="del" data-i="'+i+'">떼기</button></div>'}).join(''):'<p class="empty">아직 붙은 편지가 없어요. 첫 번째 편지를 붙여 보세요.</p>';
  document.querySelectorAll('#board .del').forEach(function(b){b.onclick=function(){var a=lload().slice();a.splice(+b.dataset.i,1);lsave(a);lrender()}})}
 $('lc').innerHTML=LC.map(function(c,i){return '<button class="sw" style="background:'+c+'" aria-label="'+LN[i]+'" aria-pressed="'+(i===0)+'" data-i="'+i+'"></button>'}).join('');
 document.querySelectorAll('#lc .sw').forEach(function(b){b.onclick=function(){lcol=+b.dataset.i;document.querySelectorAll('#lc .sw').forEach(function(x,j){x.setAttribute('aria-pressed',j===lcol)})}});
 $('lt').oninput=lcount;
-$('lsend').onclick=function(){var t=$('lt').value.trim();if(!t){$('lt').focus();return}var d=new Date(),a=lload().slice();a.unshift({t:t,c:LC[lcol],r:(Math.random()*6-3).toFixed(1),d:(d.getMonth()+1)+'월 '+d.getDate()+'일'});if(a.length>30)a.length=30;lsave(a);$('lt').value='';lcount();lrender()};
+function lsendLocal(){var t=$('lt').value.trim();if(!t){$('lt').focus();return}var d=new Date(),a=lload().slice();a.unshift({t:t,c:LC[lcol],r:(Math.random()*6-3).toFixed(1),d:(d.getMonth()+1)+'월 '+d.getDate()+'일'});if(a.length>30)a.length=30;lsave(a);$('lt').value='';lcount();lrender()};
+/* 공개 게시판: Supabase 프로젝트 주소와 anon 키를 아래 두 값에 넣으면 모두가 보는 게시판이 됩니다. */
+var LAPI={url:'https://ayojwplswtgqwsqxuzgv.supabase.co',key:'sb_publishable_rxXnXemR6HDDuFYkcs4YRQ_AM6CU_Vo'};
+function lshared(){return !!(LAPI.url&&LAPI.key)}
+function lhead(){var h={'apikey':LAPI.key,'Content-Type':'application/json'};if(LAPI.key.indexOf('eyJ')===0)h['Authorization']='Bearer '+LAPI.key;return h}
+$('lnote').textContent=lshared()?'보낸 편지는 운영자가 확인한 뒤 모두가 볼 수 있는 게시판에 붙어요. 확인에는 시간이 걸릴 수 있어요.':'이 게시판은 지금 쓰는 기기의 브라우저에만 저장돼요. 다른 사람은 내가 붙인 편지를 볼 수 없어요.';
+if(lshared())$('lsend').textContent='편지 보내기';
+function lrender(){
+ if(!lshared()){lrenderLocal();return}
+ $('board').innerHTML='<p class="empty">편지를 불러오는 중이에요…</p>';
+ fetch(LAPI.url+'/rest/v1/letters?select=id,text,color&approved=eq.true&order=created_at.desc&limit=60',{headers:lhead()})
+ .then(function(r){if(!r.ok)throw 0;return r.json()})
+ .then(function(a){$('board').innerHTML=a.length?a.map(function(n){var c=LC.indexOf(n.color)>=0?n.color:LC[0];return '<div class="pn" style="background:'+c+';--r:'+(((n.id*37)%60)/10-3).toFixed(1)+'deg"><div>'+esc(n.text).replace(/\n/g,'<br>')+'</div><small>익명</small></div>'}).join(''):'<p class="empty">아직 붙은 편지가 없어요. 첫 번째 편지를 보내 보세요.</p>'})
+ .catch(function(){$('board').innerHTML='<p class="empty">게시판을 불러오지 못했어요. 잠시 뒤에 다시 열어 보세요.</p>'})
+}
+var lbusy=false;
+$('lsend').onclick=function(){
+ if(!lshared()){lsendLocal();return}
+ var t=$('lt').value.trim();if(!t){$('lt').focus();return}
+ if(lbusy)return;
+ var last=0;try{last=+localStorage.getItem('migrant_letter_last')||0}catch(e){}
+ if(Date.now()-last<30000){$('lmsg').textContent='잠시 뒤에 다시 보내 주세요.';return}
+ lbusy=true;$('lsend').disabled=true;
+ fetch(LAPI.url+'/rest/v1/letters',{method:'POST',headers:Object.assign({Prefer:'return=minimal'},lhead()),body:JSON.stringify({text:t,color:LC[lcol]})})
+ .then(function(r){if(!r.ok)throw 0;try{localStorage.setItem('migrant_letter_last',String(Date.now()))}catch(e){}$('lt').value='';lcount();$('lmsg').textContent='편지를 보냈어요. 확인한 뒤 게시판에 붙어요.'})
+ .catch(function(){$('lmsg').textContent='편지를 보내지 못했어요. 잠시 뒤에 다시 시도해 주세요.'})
+ .then(function(){lbusy=false;$('lsend').disabled=false})
+};
 lrender();
 
 if(location.hash)show(location.hash.slice(1),false);
