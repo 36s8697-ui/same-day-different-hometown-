@@ -266,7 +266,7 @@ function lsendLocal(){var t=$('lt').value.trim();if(!t){$('lt').focus();return}v
 var LAPI={url:'https://ayojwplswtgqwsqxuzgv.supabase.co',key:'sb_publishable_rxXnXemR6HDDuFYkcs4YRQ_AM6CU_Vo'};
 function lshared(){return !!(LAPI.url&&LAPI.key)}
 function lhead(){var h={'apikey':LAPI.key,'Content-Type':'application/json'};if(LAPI.key.indexOf('eyJ')===0)h['Authorization']='Bearer '+LAPI.key;return h}
-$('lnote').textContent=lshared()?'보낸 편지는 운영자가 확인한 뒤 모두가 볼 수 있는 게시판에 붙어요. 확인에는 시간이 걸릴 수 있어요.':'이 게시판은 지금 쓰는 기기의 브라우저에만 저장돼요. 다른 사람은 내가 붙인 편지를 볼 수 없어요.';
+$('lnote').textContent=lshared()?'보낸 편지는 바로 모두가 볼 수 있는 게시판에 붙어요. 이름이나 연락처 같은 개인 정보는 쓰지 말아 주세요.':'이 게시판은 지금 쓰는 기기의 브라우저에만 저장돼요. 다른 사람은 내가 붙인 편지를 볼 수 없어요.';
 if(lshared())$('lsend').textContent='편지 보내기';
 function lrender(){
  if(!lshared()){lrenderLocal();return}
@@ -285,8 +285,8 @@ $('lsend').onclick=function(){
  if(Date.now()-last<30000){$('lmsg').textContent='잠시 뒤에 다시 보내 주세요.';return}
  lbusy=true;$('lsend').disabled=true;
  fetch(LAPI.url+'/rest/v1/letters',{method:'POST',headers:Object.assign({Prefer:'return=minimal'},lhead()),body:JSON.stringify({text:t,color:LC[lcol]})})
- .then(function(r){if(!r.ok)throw 0;try{localStorage.setItem('migrant_letter_last',String(Date.now()))}catch(e){}$('lt').value='';lcount();$('lmsg').textContent='편지를 보냈어요. 확인한 뒤 게시판에 붙어요.'})
- .catch(function(){$('lmsg').textContent='편지를 보내지 못했어요. 잠시 뒤에 다시 시도해 주세요.'})
+ .then(function(r){if(!r.ok)throw r.status;try{localStorage.setItem('migrant_letter_last',String(Date.now()))}catch(e){}$('lt').value='';lcount();$('lmsg').textContent='편지를 붙였어요. 마음을 전해 줘서 고마워요.';lrender()})
+ .catch(function(s){$('lmsg').textContent=s===400?'링크나 전화번호는 쓸 수 없어요. 내용을 고쳐서 다시 보내 주세요.':'편지를 보내지 못했어요. 잠시 뒤에 다시 시도해 주세요.'})
  .then(function(){lbusy=false;$('lsend').disabled=false})
 };
 lrender();
